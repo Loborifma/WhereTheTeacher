@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class RegisterTeacher extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,9 +30,17 @@ public class RegisterTeacher extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        String name = etName.getText().toString();
+        String link = etLink.getText().toString();
+
+        if(name.isEmpty() || link.isEmpty()){
+            Toast.makeText(this, "Одно из полей пустое", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent intent = new Intent();
-        intent.putExtra("name", etName.getText().toString());
-        intent.putExtra("link", etLink.getText().toString());
+        intent.putExtra("name", name);
+        intent.putExtra("link", link);
         setResult(RESULT_OK, intent);
         finish();
     }

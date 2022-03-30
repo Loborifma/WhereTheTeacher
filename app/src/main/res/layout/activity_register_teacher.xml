@@ -15,7 +15,8 @@
         android:layout_marginBottom="10dp"
         android:textSize="24sp"
         android:gravity="start|center_vertical"
-        android:hint="Lastname, Name" />
+        android:hint="@string/name"
+        android:inputType="textAutoCorrect" />
 
     <EditText
         android:id="@+id/etLink"
@@ -24,7 +25,8 @@
         android:layout_marginBottom="10dp"
         android:textSize="24sp"
         android:gravity="start|center_vertical"
-        android:hint="Link to the website" />
+        android:hint="@string/link"
+        android:inputType="textUri"/>
 
     <Button
         android:id="@+id/btnAdd"
@@ -32,6 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="20sp"
-        android:text="ADD" />
+        android:text="@string/add" />
 
 </LinearLayout>

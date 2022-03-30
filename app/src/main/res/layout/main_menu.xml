@@ -20,8 +20,8 @@
             android:id="@+id/btnAddMain"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="Add"
-            android:textSize="15sp" />
+            android:text="@string/add"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
