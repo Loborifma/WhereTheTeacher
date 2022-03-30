@@ -1,13 +1,7 @@
 package com.example.wheretheteacher;
 
-import static androidx.core.content.PackageManagerCompat.LOG_TAG;
-
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,22 +9,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
@@ -40,8 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ListView lvTeacher;
     Button btnAddMain;
 
-    final String FILENAME = "file";
-    final String FILELINK = "file_link";
+    SharedPreferences sPref;
 
     private static final String TAG = "myLogs";
 
@@ -56,8 +43,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lvTeacher = findViewById(R.id.lvTeacher);
         lvTeacher.setOnItemClickListener(this);
 
-        readFileName();
-        readFileLink();
+        sPref = getSharedPreferences("my_settings", MODE_PRIVATE);
+
+        boolean hasVisited = sPref.getBoolean("hasVisited", false);
+
+        if(!hasVisited){
+            Log.d(TAG, "check");
+            SharedPreferences.Editor editor = sPref.edit();
+            editor.putBoolean("hasVisited", true);
+            editor.apply();
+        }else {
+            Log.d(TAG, "uncheck");
+            load();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.my_list_item, name);
+        lvTeacher.setAdapter(adapter);
     }
 
     @Override
@@ -73,9 +78,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         name.add(data.getStringExtra("name"));
         link.add(data.getStringExtra("link"));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.my_list_item, name);
-        lvTeacher.setAdapter(adapter);
     }
 
     @Override
@@ -84,68 +86,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    public void writeFileName(){
-        try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(openFileOutput(FILENAME, MODE_PRIVATE)));
-            for(String names:name){
-                bw.write(names);
-            }
-            bw.close();
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void save(){
+        Set<String> nameSetSave = new HashSet<>(name);
+        Set<String> linkSetSave = new HashSet<>(link);
+        SharedPreferences.Editor editor = sPref.edit();
+        editor.putStringSet("name", nameSetSave);
+        editor.putStringSet("link", linkSetSave);
+        editor.apply();
     }
 
-    public void writeFileLink(){
-        try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(openFileOutput(FILELINK, MODE_PRIVATE)));
-            for(String links:link){
-                bw.write(links);
-            }
-            bw.close();
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    public void load(){
+        Set<String> nameSetLoad = sPref.getStringSet("name", new HashSet<>());
+        Set<String> linkSetLoad = sPref.getStringSet("link", new HashSet<>());
 
-    public void readFileName(){
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(FILENAME)));
-            String str = "";
-            while ((str = br.readLine()) != null){
-                name.add(str);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.my_list_item, name);
-        lvTeacher.setAdapter(adapter);
-    }
-
-    public void readFileLink(){
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(FILELINK)));
-            String str = "";
-            while ((str = br.readLine()) != null){
-                link.add(str);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        name = new ArrayList<>(nameSetLoad);
+        link = new ArrayList<>(linkSetLoad);
+        Collections.sort(name);
+        Collections.sort(link);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        writeFileLink();
-        writeFileName();
+        save();
     }
 }
