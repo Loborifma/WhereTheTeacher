@@ -13,10 +13,12 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +30,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ListView lvTeacher;
     Button btnAddMain;
 
-    SharedPreferences sPref;
+    TeachersDB database;
+    private TeachersDao teachersDao;
 
     private static final String TAG = "myLogs";
 
@@ -37,30 +40,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
 
+        database = Room.databaseBuilder(this, TeachersDB.class, "database").allowMainThreadQueries().build();
+        teachersDao = database.teachersDao();
+
         btnAddMain = findViewById(R.id.btnAddMain);
         btnAddMain.setOnClickListener(this);
 
         lvTeacher = findViewById(R.id.lvTeacher);
         lvTeacher.setOnItemClickListener(this);
 
-        sPref = getSharedPreferences("my_settings", MODE_PRIVATE);
-
-        boolean hasVisited = sPref.getBoolean("hasVisited", false);
-
-        if(!hasVisited){
-            Log.d(TAG, "check");
-            SharedPreferences.Editor editor = sPref.edit();
-            editor.putBoolean("hasVisited", true);
-            editor.apply();
-        }else {
-            Log.d(TAG, "uncheck");
-            load();
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        name = teachersDao.getTeacherName();
+        link = teachersDao.getTeacherLink();
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.my_list_item, name);
         lvTeacher.setAdapter(adapter);
     }
@@ -76,8 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if(data == null){return;}
 
-        name.add(data.getStringExtra("name"));
-        link.add(data.getStringExtra("link"));
+        Teacher teacher = new Teacher();
+        teacher.teacherName = data.getStringExtra("name");
+        teacher.link = data.getStringExtra("link");
     }
 
     @Override
@@ -86,28 +84,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    public void save(){
-        Set<String> nameSetSave = new HashSet<>(name);
-        Set<String> linkSetSave = new HashSet<>(link);
-        SharedPreferences.Editor editor = sPref.edit();
-        editor.putStringSet("name", nameSetSave);
-        editor.putStringSet("link", linkSetSave);
-        editor.apply();
-    }
-
-    public void load(){
-        Set<String> nameSetLoad = sPref.getStringSet("name", new HashSet<>());
-        Set<String> linkSetLoad = sPref.getStringSet("link", new HashSet<>());
-
-        name = new ArrayList<>(nameSetLoad);
-        link = new ArrayList<>(linkSetLoad);
-        Collections.sort(name);
-        Collections.sort(link);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        save();
     }
 }
