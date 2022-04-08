@@ -1,34 +1,33 @@
 package com.example.wheretheteacher;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
 
     List<String> name = new ArrayList<>();
     List<String> link = new ArrayList<>();
 
     ListView lvTeacher;
-    Button btnAddMain;
+    Button btnAddMain, btnDeleteAll;
+
+    Teacher teacher;
 
     TeachersDB database;
     private TeachersDao teachersDao;
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lvTeacher = findViewById(R.id.lvTeacher);
         lvTeacher.setOnItemClickListener(this);
 
+        registerForContextMenu(lvTeacher);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, RegisterTeacher.class);
-        startActivityForResult(intent, 1);
+                Intent intent = new Intent(this, RegisterTeacher.class);
+                startActivityForResult(intent, 1);
     }
 
     @Override
@@ -73,9 +73,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if(data == null){return;}
 
-        Teacher teacher = new Teacher();
+        teacher = new Teacher();
         teacher.teacherName = data.getStringExtra("name");
         teacher.link = data.getStringExtra("link");
+        teachersDao.insert(teacher);
     }
 
     @Override
@@ -85,7 +86,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, 1, 0, "Delete");
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        teachersDao.delete(lvTeacher.getId());
+        onResume();
+        return super.onContextItemSelected(item);
     }
 }

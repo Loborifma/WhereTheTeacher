@@ -1,6 +1,7 @@
 package com.example.wheretheteacher;
 
 import androidx.room.Dao;
+import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
@@ -13,4 +14,10 @@ public interface TeachersDao {
 
     @Query("SELECT link FROM Teacher")
     List<String> getTeacherLink();
+
+    @Insert
+    void insert(Teacher teacher);
+
+    @Query("DELETE FROM Teacher WHERE :id")
+    void delete(int id);
 }
