@@ -14,3 +14,7 @@ Second screen: you need put the strings as follow and click "add" button
 Third screen: you should click on needed teacher, after this the app will shoot you by the link you put on screen two
 
 <img src="https://github.com/Loborifma/WhereTheTeacher/blob/master/app/src/main/res/drawable-v24/thirdScreen.jpg?raw=true" width="200">    <img src="https://github.com/Loborifma/WhereTheTeacher/blob/master/app/src/main/res/drawable-v24/thirdScreenExample.jpg?raw=true" width="200">
+
+# Downlaod
+
+[Where the teacher](https://disk.yandex.ru/d/5dAf7VKAUQJPMw)
