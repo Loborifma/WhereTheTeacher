@@ -5,7 +5,7 @@ This application will help you to find your teacher by his schedule.
 # Instruction of exploitation
 First screen: click on the "+" button
 
-! [firstScreen](./firstScreen.jpg)
+! [firstScreen](https://github.com/Loborifma/WhereTheTeacher/blob/master/app/src/main/res/drawable-v24/firstScreen.jpg?raw=true)
 
 Second screen: you need put the strings as follow
 
