@@ -19,20 +19,21 @@ import androidx.room.Room;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener {
 
     List<String> name = new ArrayList<>();
     List<String> link = new ArrayList<>();
 
     ListView lvTeacher;
-    Button btnAddMain, btnDeleteAll;
+    Button btnAddMain;
+
+    String nameElement;
 
     Teacher teacher;
 
     TeachersDB database;
     private TeachersDao teachersDao;
-
-    private static final String TAG = "myLogs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         lvTeacher = findViewById(R.id.lvTeacher);
         lvTeacher.setOnItemClickListener(this);
+        lvTeacher.setOnItemLongClickListener(this);
 
         registerForContextMenu(lvTeacher);
     }
@@ -60,12 +62,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.my_list_item, name);
         lvTeacher.setAdapter(adapter);
+
+        if(name.isEmpty()){
+            Intent intent = new Intent(this, StartActivity.class);
+            startActivityForResult(intent, 1);
+        }
     }
 
     @Override
     public void onClick(View v) {
-                Intent intent = new Intent(this, RegisterTeacher.class);
-                startActivityForResult(intent, 1);
+        Intent intent = new Intent(this, RegisterTeacher.class);
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -92,8 +99,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        nameElement = name.get(position);
+        return false;
+    }
+
+    @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        teachersDao.delete(lvTeacher.getId());
+        teachersDao.delete(nameElement);
         onResume();
         return super.onContextItemSelected(item);
     }

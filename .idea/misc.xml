@@ -3,12 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable-v24/style_btn_stroke_black95.xml" value="0.2165" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable-v24/style_btn_stroke_black95_press_white.xml" value="0.2165" />
+        <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable-v24/style_btnstart_white.xml" value="0.2165" />
+        <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable-v24/style_for_listview.xml" value="0.2165" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable/button_stroke.xml" value="0.2165" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2165" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable/icon.xml" value="0.2165" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable/style_btn_stroke_black95.xml" value="0.2165" />
-        <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/layout/activity_register_teacher.xml" value="0.16" />
+        <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/layout-normal/activity_start.xml" value="0.1718683197947841" />
+        <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/layout/activity_register_teacher.xml" value="0.2" />
+        <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/layout/activity_start.xml" value="0.19" />
+        <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/layout/fragment_start.xml" value="0.1718683197947841" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/layout/main_menu.xml" value="0.18" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/layout/my_list.xml" value="0.2" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/layout/my_list_item.xml" value="0.18" />

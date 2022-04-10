@@ -12,9 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
-            android:name=".RegisterTeacher"
+            android:name=".StartActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".RegisterTeacher"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

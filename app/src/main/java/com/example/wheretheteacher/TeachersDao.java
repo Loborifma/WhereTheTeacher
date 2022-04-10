@@ -18,6 +18,6 @@ public interface TeachersDao {
     @Insert
     void insert(Teacher teacher);
 
-    @Query("DELETE FROM Teacher WHERE :id")
-    void delete(int id);
+    @Query("DELETE FROM Teacher WHERE teacherName = :teacherName")
+    void delete(String teacherName);
 }
