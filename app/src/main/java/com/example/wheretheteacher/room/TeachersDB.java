@@ -1,4 +1,4 @@
-package com.example.wheretheteacher;
+package com.example.wheretheteacher.room;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;

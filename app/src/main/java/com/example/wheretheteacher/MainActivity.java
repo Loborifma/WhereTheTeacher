@@ -16,6 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import com.example.wheretheteacher.room.Teacher;
+import com.example.wheretheteacher.room.TeachersDB;
+import com.example.wheretheteacher.room.TeachersDao;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Teacher teacher;
 
     TeachersDB database;
-    private TeachersDao teachersDao;
+    TeachersDao teachersDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
