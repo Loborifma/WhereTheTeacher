@@ -18,4 +18,4 @@ you need to long click on it and tap the "delete" button.
 
 # Downlaod
 
-[Yandex.disk](https://disk.yandex.ru/d/5dAf7VKAUQJPMw)
+[Yandex.disk](https://disk.yandex.ru/d/WWxLTubIQs8g9g)
