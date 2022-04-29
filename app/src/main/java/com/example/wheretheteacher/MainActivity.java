@@ -3,49 +3,40 @@ package com.example.wheretheteacher;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
+import com.example.wheretheteacher.adapter.CustomAdapter;
+import com.example.wheretheteacher.remote.DataCallBack;
+import com.example.wheretheteacher.remote.DataManager;
 import com.example.wheretheteacher.room.Teacher;
-import com.example.wheretheteacher.room.TeachersDB;
-import com.example.wheretheteacher.room.TeachersDao;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener,
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, DataCallBack,
         AdapterView.OnItemLongClickListener {
+    private static final String TAG = "myLogs";
 
-    List<String> name = new ArrayList<>();
-    List<String> link = new ArrayList<>();
-
-    ListView lvTeacher;
-    Button btnAddMain;
-
-    String nameElement;
-
-    Teacher teacher;
-
-    TeachersDB database;
-    TeachersDao teachersDao;
+    private List<Teacher> links = new ArrayList<>();
+    private ListView lvTeacher;
+    private Button btnAddMain;
+    private int numberElement;
+    private DataManager dataManager;
+    private CustomAdapter customAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
-
-        database = Room.databaseBuilder(this, TeachersDB.class, "database").allowMainThreadQueries().build();
-        teachersDao = database.teachersDao();
 
         btnAddMain = findViewById(R.id.btnAddMain);
         btnAddMain.setOnClickListener(this);
@@ -53,24 +44,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lvTeacher = findViewById(R.id.lvTeacher);
         lvTeacher.setOnItemClickListener(this);
         lvTeacher.setOnItemLongClickListener(this);
-
         registerForContextMenu(lvTeacher);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        name = teachersDao.getTeacherName();
-        link = teachersDao.getTeacherLink();
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.my_list_item, name);
-        lvTeacher.setAdapter(adapter);
-
-        if(name.isEmpty()){
-            Intent intent = new Intent(this, StartActivity.class);
-            startActivityForResult(intent, 1);
-        }
+        dataManager = new DataManager(this);
+        dataManager.loadData(MainActivity.this);
+        dataManager.linksLoad(MainActivity.this);
+        dataManager.empty(MainActivity.this);
     }
 
     @Override
@@ -84,15 +63,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if(data == null){return;}
 
-        teacher = new Teacher();
-        teacher.teacherName = data.getStringExtra("name");
-        teacher.link = data.getStringExtra("link");
-        teachersDao.insert(teacher);
+        dataManager.addData(MainActivity.this, data.getStringExtra("teacherName"),
+                    data.getStringExtra("teacherLink"));
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link.get((int) id)));
+        String tmp = links.get(position).getTeacherLink();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tmp));
         startActivity(intent);
     }
 
@@ -103,15 +81,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        nameElement = name.get(position);
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        numberElement = i;
         return false;
     }
 
     @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        teachersDao.delete(nameElement);
-        onResume();
+    public boolean onContextItemSelected(MenuItem item) {
+        dataManager.deleteData(MainActivity.this, links.get(numberElement));
         return super.onContextItemSelected(item);
     }
+
+    @Override
+    public void loadLinks(List<Teacher> teachersLinkList) {
+        links = teachersLinkList;
+    }
+
+    @Override
+    public void loadTeachersData(List<Teacher> teachersNameList) {
+        customAdapter = new CustomAdapter(this, teachersNameList);
+        lvTeacher.setAdapter(customAdapter);
+    }
+
+    @Override
+    public void isEmpty(List<Teacher> teachersNameList) {
+        if(teachersNameList.size() == 0){
+            Intent intent = new Intent(this, StartActivity.class);
+            startActivityForResult(intent, 1);
+        }
+    }
+
+    @Override
+    public void dataAdded() {
+        Log.d(TAG, "dataAdded");
+    }
+
+    @Override
+    public void errorAdded() {
+        Log.d(TAG, "errorAdded");
+    }
+
+    @Override
+    public void dataDeleted() {
+        Log.d(TAG, "dataDeleted");
+    }
+
+
+
+
 }

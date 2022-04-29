@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android_Project/Wheretheteacher/app/src/main/res/layout/item.xml" value="0.25910470409711683" />
+        <entry key="..\:/Android_Project/Wheretheteacher/app/src/main/res/layout/main_menu.xml" value="0.25910470409711683" />
+        <entry key="..\:/Android_Project/Wheretheteacher/app/src/main/res/layout/my_list_item.xml" value="0.25910470409711683" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable-v24/style_btn_stroke_black95.xml" value="0.2165" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable-v24/style_btn_stroke_black95_press_white.xml" value="0.2165" />
         <entry key="..\:/Users/Maxsim Avelardo/AndroidStudioProjects/Wheretheteacher/app/src/main/res/drawable-v24/style_btnstart_white.xml" value="0.2165" />
@@ -27,5 +30,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.25910470409711683" />
+      </ProjectState>
+    </option>
   </component>
 </project>
