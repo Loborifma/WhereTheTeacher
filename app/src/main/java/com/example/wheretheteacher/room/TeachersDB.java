@@ -8,5 +8,5 @@ import javax.inject.Singleton;
 @Database(entities = {Teacher.class}, version = 1)
 @Singleton
 public abstract class TeachersDB extends RoomDatabase {
-    public abstract TeachersDao teachersDao();
+    public abstract TeachersDao getTeachersDao();
 }

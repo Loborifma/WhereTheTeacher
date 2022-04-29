@@ -1,23 +1,23 @@
 package com.example.wheretheteacher.room;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 @Dao
 public interface TeachersDao {
 
-    @Query("SELECT teacherName FROM Teacher")
-    List<String> getTeacherName();
-
-    @Query("SELECT link FROM Teacher")
-    List<String> getTeacherLink();
+    @Query("SELECT * FROM Teacher")
+    Flowable<List<Teacher>> getTeachers();
 
     @Insert
     void insert(Teacher teacher);
 
-    @Query("DELETE FROM Teacher WHERE teacherName = :teacherName")
-    void delete(String teacherName);
+    @Delete
+    void deleteTeacher(Teacher teacher);
 }

@@ -33,8 +33,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         if(data == null){return;}
 
         Intent intent = new Intent();
-        intent.putExtra("name", data.getStringExtra("name"));
-        intent.putExtra("link", data.getStringExtra("link"));
+        intent.putExtra("teacherName", data.getStringExtra("teacherName"));
+        intent.putExtra("teacherLink", data.getStringExtra("teacherLink"));
         setResult(RESULT_OK, intent);
         finish();
     }
